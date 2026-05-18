@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Calendars</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2b27;
+    --paper:#f4f1e8;
+    --card:#fbfaf5;
+    --line:#d8d3c2;
+    --open:#3f7d63;
+    --open-soft:#e3efe8;
+    --closed:#6f5b9e;
+    --closed-soft:#ece8f3;
+    --muted:#7a7565;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Spline Sans Mono',monospace;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 1px 1px, rgba(28,43,39,0.05) 1px, transparent 0);
+    background-size:22px 22px;
+  }
+  .wrap{
+    max-width:680px;
+    margin:0 auto;
+    padding:72px 28px 96px;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:18px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(38px,8vw,60px);
+    line-height:1.04;
+    letter-spacing:-0.02em;
+    margin-bottom:20px;
+  }
+  h1 em{
+    font-style:italic;
+    color:var(--open);
+  }
+  .lede{
+    font-size:15px;
+    color:var(--muted);
+    max-width:52ch;
+    margin-bottom:54px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:30px 30px 26px;
+    margin-bottom:26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:5px;
+    background:var(--ink);
+  }
+  .card h2{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:25px;
+    letter-spacing:-0.01em;
+    margin-bottom:6px;
+  }
+  .card p.desc{
+    font-size:13.5px;
+    color:var(--muted);
+    margin-bottom:22px;
+  }
+  .keys{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:24px;
+  }
+  .key{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    padding:6px 11px;
+    border-radius:7px;
+  }
+  .key.open{background:var(--open-soft);color:var(--open);}
+  .key.closed{background:var(--closed-soft);color:var(--closed);}
+  .dot{width:9px;height:9px;border-radius:2px;flex:none;}
+  .dot.open{background:var(--open);}
+  .dot.closed{background:var(--closed);}
+  .url-row{
+    display:flex;
+    align-items:stretch;
+    border:1px solid var(--line);
+    border-radius:9px;
+    overflow:hidden;
+    background:var(--paper);
+  }
+  .url-row code{
+    flex:1;
+    padding:12px 14px;
+    font-size:12px;
+    color:var(--ink);
+    overflow-x:auto;
+    white-space:nowrap;
+    display:flex;
+    align-items:center;
+  }
+  .copy-btn{
+    flex:none;
+    border:none;
+    border-left:1px solid var(--line);
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Spline Sans Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    padding:0 18px;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .copy-btn:hover{background:var(--open);}
+  .copy-btn.done{background:var(--open);}
+  .actions{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    font-family:'Spline Sans Mono',monospace;
+    font-size:12.5px;
+    text-decoration:none;
+    padding:9px 16px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    color:var(--ink);
+    background:var(--card);
+    transition:transform .12s ease, border-color .12s ease;
+  }
+  .btn:hover{transform:translateY(-1px);border-color:var(--ink);}
+  .btn.primary{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  .how{
+    margin-top:48px;
+    border-top:1px solid var(--line);
+    padding-top:34px;
+  }
+  .how h3{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:18px;
+    margin-bottom:16px;
+  }
+  .how ol{
+    list-style:none;
+    counter-reset:step;
+  }
+  .how li{
+    counter-increment:step;
+    position:relative;
+    padding-left:38px;
+    margin-bottom:14px;
+    font-size:13.5px;
+    color:var(--muted);
+  }
+  .how li::before{
+    content:counter(step);
+    position:absolute;
+    left:0;top:1px;
+    width:24px;height:24px;
+    background:var(--open-soft);
+    color:var(--open);
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:500;
+  }
+  .how li strong{color:var(--ink);font-weight:500;}
+  .foot{
+    margin-top:46px;
+    font-size:11.5px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+  .foot a{color:var(--open);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">LFPH &middot; 2026 / 2027</p>
+  <h1>Family <em>calendars</em></h1>
+  <p class="lede">Subscribe once and the school holidays appear in your own calendar app &mdash; always current, no manual entry.</p>
+
+  <div class="card">
+    <h2>School closed</h2>
+    <p class="desc">Every period the school is closed across the 2026/2027 year, marked by whether after-school care (SFO) is running.</p>
+
+    <div class="keys">
+      <span class="key open"><span class="dot open"></span>SFO open</span>
+      <span class="key closed"><span class="dot closed"></span>SFO closed</span>
+    </div>
+
+    <div class="url-row">
+      <code id="feed-url">https://emilhovgaard.github.io/family-calendars/school-closed.ics</code>
+      <button class="copy-btn" id="copy-btn">Copy</button>
+    </div>
+
+    <div class="actions">
+      <a class="btn primary" id="webcal-link" href="webcal://emilhovgaard.github.io/family-calendars/school-closed.ics">Subscribe</a>
+      <a class="btn" href="school-closed.ics" download>Download .ics</a>
+    </div>
+  </div>
+
+  <div class="how">
+    <h3>How to subscribe</h3>
+    <ol>
+      <li><strong>Google Calendar:</strong> Other calendars &rarr; From URL &rarr; paste the link above.</li>
+      <li><strong>Apple Calendar:</strong> File &rarr; New Calendar Subscription &rarr; paste the link.</li>
+      <li><strong>Outlook:</strong> Add calendar &rarr; Subscribe from web &rarr; paste the link.</li>
+      <li>Your app will <strong>refresh on its own</strong> &mdash; typically once a day &mdash; so the calendar stays up to date.</li>
+    </ol>
+  </div>
+
+  <p class="foot">
+    Holiday dates are read from the LFPH school calendars and may need confirming against the school's official calendar.
+    The calendar refreshes when this feed is updated.
+  </p>
+
+</div>
+
+<script>
+  (function(){
+    var btn = document.getElementById('copy-btn');
+    var url = document.getElementById('feed-url').textContent.trim();
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(url).then(function(){
+        btn.textContent = 'Copied';
+        btn.classList.add('done');
+        setTimeout(function(){
+          btn.textContent = 'Copy';
+          btn.classList.remove('done');
+        }, 1800);
+      }).catch(function(){
+        btn.textContent = 'Copy failed';
+        setTimeout(function(){ btn.textContent = 'Copy'; }, 1800);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
