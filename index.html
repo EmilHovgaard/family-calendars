@@ -3,274 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Family Calendars</title>
+<title>LFPH School Calendar — Subscribe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#1c2b27;
-    --paper:#f4f1e8;
-    --card:#fbfaf5;
-    --line:#d8d3c2;
-    --open:#3f7d63;
-    --open-soft:#e3efe8;
-    --closed:#6f5b9e;
-    --closed-soft:#ece8f3;
-    --muted:#7a7565;
+    --ink:#1d1d1b;
+    --ink-2:#3a3a37;
+    --paper:#fbfbf9;
+    --card:#ffffff;
+    --line:#e3e3df;
+    --line-soft:#eeeeeb;
+    --muted:#6a6a66;
+    --faint:#9a9a96;
+    --green:#2f6b4f;        /* the single accent — reserved for Subscribe */
+    --green-dk:#255840;
+    --r:11px;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{height:100%;}
+  html{-webkit-text-size-adjust:100%;}
   body{
     background:var(--paper);
     color:var(--ink);
-    font-family:'Spline Sans Mono',monospace;
-    line-height:1.6;
+    font-family:'Newsreader',Georgia,serif;
+    font-size:17px;
+    line-height:1.62;
     -webkit-font-smoothing:antialiased;
-    background-image:radial-gradient(circle at 1px 1px, rgba(28,43,39,0.05) 1px, transparent 0);
-    background-size:22px 22px;
   }
   .wrap{
-    max-width:680px;
+    max-width:580px;
     margin:0 auto;
-    padding:72px 28px 96px;
+    padding:clamp(48px,9vw,80px) 24px 88px;
   }
-  .eyebrow{
-    font-size:12px;
-    letter-spacing:0.22em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-bottom:18px;
+  .reveal{opacity:0;transform:translateY(12px);animation:rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  @keyframes rise{to{opacity:1;transform:translateY(0);}}
+  .d1{animation-delay:.05s;} .d2{animation-delay:.13s;}
+  .d3{animation-delay:.21s;} .d4{animation-delay:.30s;}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{animation:none;opacity:1;transform:none;}
+  }
+
+  .crest{display:flex;align-items:center;gap:11px;margin-bottom:30px;}
+  .crest .rule{height:1px;background:var(--line);flex:1;}
+  .crest .mark{
+    font-family:'Fraunces',serif;font-size:11.5px;font-weight:600;
+    letter-spacing:.05em;color:var(--ink-2);white-space:nowrap;
+  }
+  .kicker{
+    font-family:'Newsreader',serif;font-style:italic;
+    font-size:15px;color:var(--muted);margin-bottom:10px;
   }
   h1{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    font-size:clamp(38px,8vw,60px);
-    line-height:1.04;
-    letter-spacing:-0.02em;
-    margin-bottom:20px;
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:clamp(38px,8.8vw,56px);line-height:1.05;
+    letter-spacing:-0.025em;margin-bottom:20px;
   }
-  h1 em{
-    font-style:italic;
-    color:var(--open);
+  .standfirst{
+    font-size:18px;color:var(--muted);max-width:48ch;margin-bottom:0;
   }
-  .lede{
-    font-size:15px;
-    color:var(--muted);
-    max-width:52ch;
-    margin-bottom:54px;
-  }
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:30px 30px 26px;
-    margin-bottom:26px;
-    position:relative;
-    overflow:hidden;
-  }
-  .card::before{
-    content:"";
-    position:absolute;
-    left:0;top:0;bottom:0;
-    width:5px;
-    background:var(--ink);
-  }
-  .card h2{
-    font-family:'Fraunces',serif;
-    font-weight:500;
-    font-size:25px;
-    letter-spacing:-0.01em;
-    margin-bottom:6px;
-  }
-  .card p.desc{
-    font-size:13.5px;
-    color:var(--muted);
-    margin-bottom:22px;
-  }
-  .keys{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:24px;
-  }
-  .key{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:12px;
-    padding:6px 11px;
-    border-radius:7px;
-  }
-  .key.open{background:var(--open-soft);color:var(--open);}
-  .key.closed{background:var(--closed-soft);color:var(--closed);}
-  .dot{width:9px;height:9px;border-radius:2px;flex:none;}
-  .dot.open{background:var(--open);}
-  .dot.closed{background:var(--closed);}
-  .url-row{
-    display:flex;
-    align-items:stretch;
-    border:1px solid var(--line);
-    border-radius:9px;
-    overflow:hidden;
-    background:var(--paper);
-  }
-  .url-row code{
-    flex:1;
-    padding:12px 14px;
-    font-size:12px;
-    color:var(--ink);
-    overflow-x:auto;
-    white-space:nowrap;
-    display:flex;
-    align-items:center;
-  }
-  .copy-btn{
-    flex:none;
-    border:none;
-    border-left:1px solid var(--line);
-    background:var(--ink);
-    color:var(--paper);
-    font-family:'Spline Sans Mono',monospace;
-    font-size:12px;
-    letter-spacing:0.04em;
-    padding:0 18px;
-    cursor:pointer;
-    transition:background .15s ease;
-  }
-  .copy-btn:hover{background:var(--open);}
-  .copy-btn.done{background:var(--open);}
-  .actions{
-    display:flex;
-    gap:10px;
-    margin-top:14px;
-    flex-wrap:wrap;
-  }
-  .btn{
-    font-family:'Spline Sans Mono',monospace;
-    font-size:12.5px;
-    text-decoration:none;
-    padding:9px 16px;
-    border-radius:8px;
-    border:1px solid var(--line);
-    color:var(--ink);
-    background:var(--card);
-    transition:transform .12s ease, border-color .12s ease;
-  }
-  .btn:hover{transform:translateY(-1px);border-color:var(--ink);}
-  .btn.primary{
-    background:var(--ink);
-    color:var(--paper);
-    border-color:var(--ink);
-  }
-  .how{
-    margin-top:48px;
+  .standfirst strong{color:var(--ink);font-weight:500;}
+
+  /* ---- one-line SFO note ---- */
+  .legend-line{
+    font-size:15px;color:var(--muted);
+    max-width:46ch;
+    margin:26px 0 40px;
+    padding-top:22px;
     border-top:1px solid var(--line);
-    padding-top:34px;
   }
-  .how h3{
-    font-family:'Fraunces',serif;
-    font-weight:500;
-    font-size:18px;
-    margin-bottom:16px;
+  .legend-line b{
+    color:var(--ink);font-weight:600;
+    font-family:'Fraunces',serif;font-size:14px;
   }
-  .how ol{
-    list-style:none;
-    counter-reset:step;
+
+  /* ---- raised action card: the focal point ---- */
+  .action-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--green);
+    border-radius:var(--r);
+    padding:26px 24px 24px;
+    margin:8px 0 12px;
+    box-shadow:0 6px 22px -10px rgba(29,29,27,0.18);
   }
-  .how li{
-    counter-increment:step;
-    position:relative;
-    padding-left:38px;
-    margin-bottom:14px;
-    font-size:13.5px;
-    color:var(--muted);
+  .action-card .step:last-child{margin-bottom:0;}
+  .action-card .step .step-body{padding-bottom:0;}
+  .action-card .closer{margin-bottom:0;}
+
+  /* ---- steps ---- */
+  .step{display:grid;grid-template-columns:auto 1fr;gap:17px;margin-bottom:14px;}
+  .num{
+    font-family:'Fraunces',serif;font-size:13.5px;font-weight:600;
+    width:30px;height:30px;border:1px solid var(--ink);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;flex:none;
   }
-  .how li::before{
-    content:counter(step);
-    position:absolute;
-    left:0;top:1px;
-    width:24px;height:24px;
-    background:var(--open-soft);
-    color:var(--open);
-    border-radius:6px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:12px;
-    font-weight:500;
+  .step-body{padding-top:3px;}
+  .step h2{
+    font-family:'Fraunces',serif;font-weight:500;font-size:21px;
+    letter-spacing:-0.01em;margin-bottom:3px;
   }
-  .how li strong{color:var(--ink);font-weight:500;}
+  .step .say{font-size:14.5px;color:var(--muted);margin-bottom:14px;}
+  .connector{
+    width:1px;background:var(--line);margin:2px auto 2px 14.5px;height:16px;
+  }
+
+  /* ---- the one green element ---- */
+  .cta-primary{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;
+    text-decoration:none;
+    background:var(--green);color:#fff;
+    padding:14px 26px;border-radius:9px;border:1.5px solid var(--green);
+    box-shadow:0 2px 0 var(--green-dk);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .cta-primary:hover{transform:translateY(-1px);box-shadow:0 3px 0 var(--green-dk);}
+  .cta-primary:active{transform:translateY(1px);box-shadow:0 1px 0 var(--green-dk);}
+  .cta-primary .arrow{font-family:'Newsreader',serif;font-weight:400;}
+
+  .lone h2{
+    font-family:'Fraunces',serif;font-weight:500;font-size:23px;
+    letter-spacing:-0.01em;margin-bottom:5px;
+  }
+  .lone .say{font-size:14.5px;color:var(--muted);margin-bottom:18px;}
+
+  /* ---- copy field (monochrome) ---- */
+  .field{
+    display:flex;border:1.5px solid var(--ink);border-radius:9px;
+    overflow:hidden;background:var(--card);
+  }
+  .field code{
+    flex:1;padding:13px 14px;font-family:'Newsreader',monospace;
+    font-size:12.5px;color:var(--ink);overflow-x:auto;white-space:nowrap;
+    display:flex;align-items:center;
+  }
+  .field button{
+    flex:none;border:none;border-left:1.5px solid var(--ink);
+    background:var(--ink);color:var(--paper);
+    font-family:'Fraunces',serif;font-size:13px;font-weight:600;
+    padding:0 22px;cursor:pointer;transition:opacity .16s ease;
+  }
+  .field button:hover{opacity:.82;}
+  .field button.done{background:var(--green);}
+
+  .alt-line{margin-top:13px;font-size:13px;color:var(--faint);}
+  .alt-line a{
+    color:var(--ink-2);text-decoration:none;
+    border-bottom:1px solid var(--line);padding-bottom:1px;cursor:pointer;
+  }
+  .alt-line a:hover{border-bottom-color:var(--ink);}
+
+  .label-tiny{
+    font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--faint);margin-bottom:9px;font-family:'Newsreader',serif;
+  }
+  .copy-collapsed{display:none;margin-top:16px;}
+  .copy-collapsed.show{display:block;}
+
+  .apps{margin-top:6px;}
+  .app{
+    display:flex;gap:12px;padding:11px 0;
+    border-bottom:1px solid var(--line-soft);font-size:14px;
+  }
+  .app:last-child{border-bottom:none;}
+  .app .name{
+    font-family:'Fraunces',serif;font-weight:600;font-size:13.5px;
+    flex:none;width:72px;
+  }
+  .app .path{color:var(--muted);}
+  .app .path b{color:var(--ink);font-weight:500;}
+
+  .closer{
+    margin-top:18px;
+    font-size:14.5px;font-style:italic;color:var(--muted);
+    padding-left:14px;border-left:2px solid var(--line);
+  }
+
   .foot{
-    margin-top:46px;
-    font-size:11.5px;
-    color:var(--muted);
-    line-height:1.7;
+    margin-top:46px;padding-top:22px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--faint);line-height:1.7;
   }
-  .foot a{color:var(--open);}
+  .foot .made{
+    font-family:'Fraunces',serif;font-style:italic;
+    font-size:12.5px;color:var(--muted);
+  }
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <p class="eyebrow">LFPH &middot; 2026 / 2027</p>
-  <h1>Family <em>calendars</em></h1>
-  <p class="lede">Subscribe once and the school holidays appear in your own calendar app &mdash; always current, no manual entry.</p>
-
-  <div class="card">
-    <h2>School closed</h2>
-    <p class="desc">Every period the school is closed across the 2026/2027 year, marked by whether after-school care (SFO) is running.</p>
-
-    <div class="keys">
-      <span class="key open"><span class="dot open"></span>SFO open</span>
-      <span class="key closed"><span class="dot closed"></span>SFO closed</span>
-    </div>
-
-    <div class="url-row">
-      <code id="feed-url">https://emilhovgaard.github.io/family-calendars/school-closed.ics</code>
-      <button class="copy-btn" id="copy-btn">Copy</button>
-    </div>
-
-    <div class="actions">
-      <a class="btn primary" id="webcal-link" href="webcal://emilhovgaard.github.io/family-calendars/school-closed.ics">Subscribe</a>
-      <a class="btn" href="school-closed.ics" download>Download .ics</a>
-    </div>
+  <div class="crest reveal d1">
+    <span class="mark">LYCÉE FRANÇAIS PRINS HENRIK</span>
+    <span class="rule"></span>
   </div>
 
-  <div class="how">
-    <h3>How to subscribe</h3>
-    <ol>
-      <li><strong>Google Calendar:</strong> Other calendars &rarr; From URL &rarr; paste the link above.</li>
-      <li><strong>Apple Calendar:</strong> File &rarr; New Calendar Subscription &rarr; paste the link.</li>
-      <li><strong>Outlook:</strong> Add calendar &rarr; Subscribe from web &rarr; paste the link.</li>
-      <li>Your app will <strong>refresh on its own</strong> &mdash; typically once a day &mdash; so the calendar stays up to date.</li>
-    </ol>
-  </div>
+  <p class="kicker reveal d1">For LFPH parents · School year 2026 — 2027</p>
+  <h1 class="reveal d2">Add the school calendar to your own.</h1>
 
-  <p class="foot">
-    Holiday dates are read from the LFPH school calendars and may need confirming against the school's official calendar.
-    The calendar refreshes when this feed is updated.
+  <p class="standfirst reveal d3">
+    Add the LFPH calendar to your own, and every school holiday is there —
+    no typing, no PDF. <strong>Just subscribe once.</strong>
   </p>
+
+  <p class="legend-line reveal d3">
+    Each holiday is marked <b>SFO open</b> or <b>SFO closed</b> — whether
+    after-school care runs that day.
+  </p>
+
+  <!-- ===== APPLE PATH ===== -->
+  <div id="path-apple" class="action-card reveal d4" style="display:none;">
+    <div class="lone">
+      <h2>Add the calendar</h2>
+      <p class="say">One tap opens it in your calendar app — choose <b>iCloud</b> when asked, so it syncs to all your devices.</p>
+      <a class="cta-primary" href="webcal://emilhovgaard.github.io/family-calendars/school-closed.ics">
+        Subscribe now <span class="arrow">→</span>
+      </a>
+      <p class="alt-line">
+        Didn't open? <a id="reveal-copy">Copy the link instead</a> and add it by hand.
+      </p>
+      <div class="copy-collapsed" id="copy-collapsed">
+        <p class="label-tiny">Calendar link</p>
+        <div class="field">
+          <code id="feed-url-a">https://emilhovgaard.github.io/family-calendars/school-closed.ics</code>
+          <button id="copy-btn-a" aria-label="Copy calendar link">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DEFAULT PATH ===== -->
+  <div id="path-default" class="action-card reveal d4">
+
+    <div class="step">
+      <span class="num">1</span>
+      <div class="step-body">
+        <h2>Copy the calendar link</h2>
+        <p class="say">This one link is the calendar. Copy it, then add it to your app in step&nbsp;2.</p>
+        <div class="field">
+          <code id="feed-url-d">https://emilhovgaard.github.io/family-calendars/school-closed.ics</code>
+          <button id="copy-btn-d" aria-label="Copy calendar link">Copy</button>
+        </div>
+        <p class="alt-line">
+          On an iPhone or Mac you can skip ahead —
+          <a href="webcal://emilhovgaard.github.io/family-calendars/school-closed.ics">open it in your calendar app</a>.
+        </p>
+      </div>
+    </div>
+    <div class="connector" aria-hidden="true"></div>
+
+    <div class="step">
+      <span class="num">2</span>
+      <div class="step-body">
+        <h2>Paste it into your calendar</h2>
+        <p class="say">Find the matching option for the app you use:</p>
+        <div class="apps">
+          <div class="app">
+            <span class="name">Google</span>
+            <span class="path">Other calendars → <b>From URL</b> → paste the link.</span>
+          </div>
+          <div class="app">
+            <span class="name">Outlook</span>
+            <span class="path">Add calendar → <b>Subscribe from web</b> → paste the link.</span>
+          </div>
+        </div>
+        <p class="closer">
+          That's it — the holidays appear in your calendar, and your app re-checks
+          the link on its own, so it stays up to date.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="sr-only" id="copy-status" role="status" aria-live="polite"></p>
+
+  <div class="foot reveal d4">
+    <p class="made">Made by a parent, for parents — an unofficial calendar, not affiliated with the school.</p>
+    <p style="margin-top:6px;">
+      Holiday dates are taken from the LFPH school calendar and may need confirming
+      against the official version. Spotted something off? Let me know and I'll fix it.
+    </p>
+  </div>
 
 </div>
 
 <script>
   (function(){
-    var btn = document.getElementById('copy-btn');
-    var url = document.getElementById('feed-url').textContent.trim();
-    btn.addEventListener('click', function(){
-      navigator.clipboard.writeText(url).then(function(){
-        btn.textContent = 'Copied';
-        btn.classList.add('done');
+    var ua=navigator.userAgent||'';
+    var isApple=/iPhone|iPad|iPod|Macintosh/.test(ua)
+                || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+    if(isApple){
+      document.getElementById('path-apple').style.display='block';
+      document.getElementById('path-default').style.display='none';
+    }
+
+    var status=document.getElementById('copy-status');
+    function wireCopy(btnId, codeId){
+      var btn=document.getElementById(btnId);
+      var codeEl=document.getElementById(codeId);
+      if(!btn||!codeEl) return;
+      var url=codeEl.textContent.trim();
+      function flash(label,msg,ok){
+        btn.textContent=label;
+        if(ok) btn.classList.add('done');
+        status.textContent=msg;
         setTimeout(function(){
-          btn.textContent = 'Copy';
+          btn.textContent='Copy';
           btn.classList.remove('done');
-        }, 1800);
-      }).catch(function(){
-        btn.textContent = 'Copy failed';
-        setTimeout(function(){ btn.textContent = 'Copy'; }, 1800);
+          status.textContent='';
+        },2300);
+      }
+      function legacyCopy(){
+        var range=document.createRange();
+        range.selectNodeContents(codeEl);
+        var sel=window.getSelection();
+        sel.removeAllRanges(); sel.addRange(range);
+        try{
+          var ok=document.execCommand('copy');
+          flash(ok?'Copied':'Select & copy',
+                ok?'Link copied to clipboard':'Please select the link and copy it manually',ok);
+        }catch(e){
+          flash('Select & copy','Please select the link and copy it manually',false);
+        }
+      }
+      btn.addEventListener('click',function(){
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(url).then(function(){
+            flash('Copied','Link copied to clipboard',true);
+          }).catch(legacyCopy);
+        } else { legacyCopy(); }
       });
-    });
+    }
+    wireCopy('copy-btn-d','feed-url-d');
+    wireCopy('copy-btn-a','feed-url-a');
+
+    var revealLink=document.getElementById('reveal-copy');
+    if(revealLink){
+      revealLink.addEventListener('click',function(){
+        document.getElementById('copy-collapsed').classList.add('show');
+        revealLink.parentNode.style.display='none';
+      });
+    }
   })();
 </script>
 </body>
